@@ -253,7 +253,7 @@ repeated_list = [1, 2] * 3
 
 print("[1, 2] * 3:")
 print(repeated_list)
-print()
+
 
 
 # ==========================================
