@@ -1,0 +1,16 @@
+bus,car,bike charges
+
+vehicle per hour charge
+bike-        20
+car -        40
+bus -        80
+
+rules :
+
+if parking<=1 hour: charges will be 0
+ >5: 10% disscount
+
+
+7h->140-140/10%
+
+

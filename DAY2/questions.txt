@@ -1,0 +1,16 @@
+take input from the number
+ATM pin validation
+
+
+
+
+
+student management system
+1.add
+2.view
+3.search
+4.delete
+5.update
+
+student details
+name,age,gender,roll_no,branch(roll no ,name,sec)

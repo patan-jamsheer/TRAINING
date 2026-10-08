@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CropWise AI | Crop Recommendation</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="background-glow glow-one"></div>
+    <div class="background-glow glow-two"></div>
+
+    <main class="container">
+        <nav class="navbar">
+            <div class="brand">
+                <div class="brand-icon">🌱</div>
+                <div>
+                    <h2>CropWise AI</h2>
+                    <span>Smart Crop Recommendation</span>
+                </div>
+            </div>
+            <div class="badge">Random Forest ML</div>
+        </nav>
+
+        <section class="hero">
+            <div class="hero-content">
+                <p class="eyebrow">AI-POWERED AGRICULTURE</p>
+                <h1>Find the <span>right crop</span><br>for your soil.</h1>
+                <p class="hero-text">
+                    Enter your soil nutrients and weather conditions.
+                    Our Random Forest model will recommend the most suitable crop.
+                </p>
+            </div>
+
+            <div class="hero-card">
+                <div class="mini-icon">🌾</div>
+                <strong>22</strong>
+                <span>crop categories</span>
+            </div>
+        </section>
+
+        <section class="app-grid">
+            <div class="card form-card">
+                <div class="card-header">
+                    <div>
+                        <p class="section-label">INPUT DATA</p>
+                        <h2>Farm conditions</h2>
+                    </div>
+                    <button class="reset-btn" type="button" onclick="resetForm()">Reset</button>
+                </div>
+
+                <form id="predictionForm">
+                    <div class="field-grid">
+                        <div class="field">
+                            <label for="N">Nitrogen <span>(N)</span></label>
+                            <div class="input-wrap">
+                                <input id="N" name="N" type="number" step="0.01" min="0" placeholder="e.g. 90" required>
+                                <small>kg/ha</small>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label for="P">Phosphorus <span>(P)</span></label>
+                            <div class="input-wrap">
+                                <input id="P" name="P" type="number" step="0.01" min="0" placeholder="e.g. 42" required>
+                                <small>kg/ha</small>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label for="K">Potassium <span>(K)</span></label>
+                            <div class="input-wrap">
+                                <input id="K" name="K" type="number" step="0.01" min="0" placeholder="e.g. 43" required>
+                                <small>kg/ha</small>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label for="temperature">Temperature</label>
+                            <div class="input-wrap">
+                                <input id="temperature" name="temperature" type="number" step="0.01" placeholder="e.g. 25.5" required>
+                                <small>°C</small>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label for="humidity">Humidity</label>
+                            <div class="input-wrap">
+                                <input id="humidity" name="humidity" type="number" step="0.01" min="0" max="100" placeholder="e.g. 80" required>
+                                <small>%</small>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label for="ph">Soil pH</label>
+                            <div class="input-wrap">
+                                <input id="ph" name="ph" type="number" step="0.01" min="0" max="14" placeholder="e.g. 6.5" required>
+                                <small>pH</small>
+                            </div>
+                        </div>
+
+                        <div class="field full">
+                            <label for="rainfall">Rainfall</label>
+                            <div class="input-wrap">
+                                <input id="rainfall" name="rainfall" type="number" step="0.01" min="0" placeholder="e.g. 200" required>
+                                <small>mm</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="predict-btn" type="submit" id="predictBtn">
+                        <span>🌿</span>
+                        <span>Recommend Crop</span>
+                        <span class="arrow">→</span>
+                    </button>
+                </form>
+
+                <div class="sample-row">
+                    <span>Want to test quickly?</span>
+                    <button type="button" onclick="loadSample()">Load sample values</button>
+                </div>
+            </div>
+
+            <div class="card result-card" id="resultCard">
+                <div class="result-empty" id="emptyState">
+                    <div class="result-icon">🌱</div>
+                    <p class="section-label">YOUR RESULT</p>
+                    <h2>Your recommendation<br>will appear here.</h2>
+                    <p>Fill in the farm conditions and click <b>Recommend Crop</b>.</p>
+                </div>
+
+                <div class="result-content hidden" id="resultContent">
+                    <div class="result-top">
+                        <div>
+                            <p class="section-label">RECOMMENDED CROP</p>
+                            <h2 id="cropName">Rice</h2>
+                        </div>
+                        <div class="crop-icon">🌾</div>
+                    </div>
+
+                    <div class="confidence">
+                        <div class="confidence-head">
+                            <span>Model confidence</span>
+                            <strong id="confidenceText">--%</strong>
+                        </div>
+                        <div class="progress">
+                            <div id="confidenceBar"></div>
+                        </div>
+                    </div>
+
+                    <div class="success-message">
+                        <span>✓</span>
+                        <div>
+                            <strong>Recommendation generated</strong>
+                            <p>Based on the soil and climate values you provided.</p>
+                        </div>
+                    </div>
+
+                    <button class="again-btn" type="button" onclick="resetForm()">
+                        Make another prediction
+                    </button>
+                </div>
+
+                <div class="loading hidden" id="loading">
+                    <div class="spinner"></div>
+                    <p>Analyzing your farm conditions...</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <span>CropWise AI</span>
+            <span>•</span>
+            <span>Flask + Random Forest</span>
+            <span>•</span>
+            <span>Machine Learning Project</span>
+        </footer>
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
